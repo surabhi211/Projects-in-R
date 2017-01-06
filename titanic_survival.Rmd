@@ -1,0 +1,89 @@
+---
+title: "Exploring the Titanic survival data"
+author: "Surabhi Chouhan"
+date: "December 28, 2016"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Import the required packages
+```{r}
+library("plyr")
+library("sqldf")
+library("ggplot2")
+library("ggvis")
+
+```
+
+
+##Importing the titanic survival dataset
+```{r, echo=FALSE}
+titanic <- read.csv("D:/Surabhi docs/portfolio/proj_1/titanic.csv")
+
+str(titanic)
+```
+
+##Some descriptive stats of the survival data
+```{r, echo=FALSE}
+total <- sqldf("select count(*) from titanic")
+survived <- sqldf("select count(*) from titanic where Survived = 1")
+died <- sqldf("select count(*) from titanic where Survived = 0")
+survival_data <- data.frame(total,survived,died)
+names(survival_data) <- c("Total passensgers","Passengers survived","Passengers died")
+pct <- round(mean(titanic$Survived == 1) * 100)
+
+survival_data
+
+print(paste("Out of total 891 passengers only",pct,"% of people survived, that is, only",survived, "passengers survived"))
+
+```
+
+
+##Lets try some vizualisations
+```{r, echo=FALSE}
+
+#Histogram on Age- which shows that people ranging to 80 years were there in the ship
+g <- ggplot(data=titanic, aes(x=Age))
+g <- g + geom_histogram(binwidth=5,color="white",fill="pink",na.rm=TRUE) 
+g <- g + ggtitle("Age variation of passengers")
+g
+
+
+#This graph represents the survival ratio
+g <- ggplot(data=titanic, aes(x=Survived))
+g <- g + geom_histogram(binwidth=1,color="red",fill="lightblue") 
+g <- g + ggtitle("Survival ratio of passengers where 1 is Survived & 0 is Died")
+g
+
+
+#This graph represents the survival data of the passengers according to the PassengerId
+g <- ggplot(titanic, aes(x=PassengerId,y=Survived))
+g <- g + geom_point(aes(),color="blue") 
+g <- g + ggtitle("Survival data based on PassengerId where 1 is Survived & 0 is Died")
+g
+
+g	<- ggplot(titanic,aes(x=Age,y=Sex),na.rm=TRUE) 
+g	<- g + geom_point(aes(size=Age,color=Sex),na.rm=TRUE) 
+g <- g + ggtitle("Variation of Gender according to Age of passengers")
+g
+
+g <- ggplot(titanic, aes(x=PassengerId, y=Fare), na.rm=TRUE)
+g <- g + geom_point(aes(size=Fare, color=Pclass)) + ggtitle("Fare paid by passengers as per the Class")
+g
+
+g <- ggplot(titanic, aes(x=PassengerId,y=Fare), na.rm=TRUE)
+g <- g + geom_point(aes(color=Survived)) 
+g <- g + ggtitle("Survival wrt to PassengerId and Fare where 1 is Survived & 0 is Died")
+g
+
+```
+  
+
+
+
+
