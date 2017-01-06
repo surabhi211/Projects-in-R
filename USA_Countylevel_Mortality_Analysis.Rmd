@@ -1,0 +1,143 @@
+---
+title: "US County Level Mortality"
+author: "Surabhi Chouhan"
+date: "January 6, 2017"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r,echo=FALSE,warning=FALSE}
+library(tidyr)
+library(highcharter)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(choroplethr)
+library(choroplethrMaps)
+
+```
+
+```{r,echo=FALSE,warning=FALSE}
+usa_deaths <- read.csv("D:/Surabhi docs/portfolio/proj_2/us-countylevel-mortality/mort.csv", sep=",")
+
+```
+
+
+
+##Mortality Rate in 2014 for Digestive diseases
+```{r,warning=FALSE}
+usa_deaths_1 <- usa_deaths[usa_deaths$Category == "Digestive diseases",c("FIPS","Mortality.Rate..2014.")]
+usa_deaths_1 <- usa_deaths_1[usa_deaths_1$FIPS > 1000,] # We want counties, value > 1000
+
+# Change to c("region","value") for mapping
+colnames(usa_deaths_1)<- c("region","value")
+
+county_choropleth(usa_deaths_1, 
+                  title = "Mortality Rate 2014 (Digestive diseases)", 
+                  legend = "Deaths per 100,000")
+```
+
+##Lets zoom into a State
+```{r,warning=FALSE}
+county_choropleth(usa_deaths_1,
+                 title      = "Mortality Rate 2014 (Digestive diseases)",
+                 legend     = "Deaths per 100,000",
+                 num_colors = 1,
+                 state_zoom = c("pennsylvania", "new jersey", "new york"))
+```
+
+
+##Mortality Rate in 2014 for Cardiovascular diseases
+```{r,warning=FALSE}
+usa_deaths_2 <- usa_deaths[usa_deaths$Category== "Cardiovascular diseases",c("FIPS","Mortality.Rate..2014.")]                                 
+usa_deaths_2 <- usa_deaths_2[usa_deaths_2$FIPS > 1000,] # We want counties, value > 1000
+
+# Change to c("region","value") for mapping
+colnames(usa_deaths_2)<- c("region","value")
+
+county_choropleth(usa_deaths_2, 
+                  title = "Mortality Rate 2014 (Cardiovascular Diseases)", 
+                  legend = "Deaths per 100,000")
+```
+
+##Lets zoom into a State
+```{r,warning=FALSE}
+county_choropleth(usa_deaths_2,
+                 title      = "Mortality Rate 2014 (Cardiovascular Diseases)",
+                 legend     = "Deaths per 100,000",
+                 num_colors = 1,
+                 state_zoom = c("pennsylvania", "new jersey", "new york"))
+```
+
+##Mortality Rate in 2014 for Transport injuries
+```{r,warning=FALSE}
+usa_deaths_3 <- usa_deaths[usa_deaths$Category == "Transport injuries",c("FIPS","Mortality.Rate..2014.")]
+usa_deaths_3 <- usa_deaths_3[usa_deaths_3$FIPS > 1000,] # We want counties, value > 1000
+
+# Change to c("region","value") for mapping
+colnames(usa_deaths_3)<- c("region","value")
+
+county_choropleth(usa_deaths_3, 
+                  title = "Mortality Rate 2014 (Transport injuries)", 
+                  legend = "Deaths per 100,000")
+
+```
+
+##Lets zoom into a State
+```{r,warning=FALSE}
+county_choropleth(usa_deaths_3,
+                 title      = "Mortality Rate 2014 (Transport injuries)",
+                 legend     = "Deaths per 100,000",
+                 num_colors = 1,
+                 state_zoom = c("pennsylvania", "new jersey", "new york"))
+```
+
+##Mortality Rate in 2014 for Self-harm and interpersonal violence
+```{r,warning=FALSE}
+usa_deaths_4 <- usa_deaths[usa_deaths$Category == "Self-harm and interpersonal violence",c("FIPS","Mortality.Rate..2014.")]
+usa_deaths_4 <- usa_deaths_4[usa_deaths_4$FIPS > 1000,] # We want counties, value > 1000
+
+# Change to c("region","value") for mapping
+colnames(usa_deaths_4)<- c("region","value")
+
+county_choropleth(usa_deaths_4, 
+                  title = "Mortality Rate 2014 (Self-harm and interpersonal violence)", 
+                  legend = "Deaths per 100,000")
+```
+
+##Lets zoom into a State
+```{r,warning=FALSE}
+county_choropleth(usa_deaths_4,
+                 title      = "Mortality Rate 2014 (Self-harm and interpersonal violence)",
+                 legend     = "Deaths per 100,000",
+                 num_colors = 1,
+                 state_zoom = c("pennsylvania", "new jersey", "new york"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
